@@ -8,10 +8,9 @@ function getWishlist(){
   try{ return JSON.parse(localStorage.getItem(WISH_KEY)) || []; }
   catch(e){ return []; }
 }
-function isWishlisted(id){ return getWishlist().includes(Number(id)); }
+function isWishlisted(id){ return getWishlist().includes(id); }
 
 function toggleWishlist(id){
-  id = Number(id);
   let list = getWishlist();
   const product = getProductById(id);
   if(list.includes(id)){

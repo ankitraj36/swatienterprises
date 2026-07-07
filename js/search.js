@@ -16,7 +16,7 @@ function suggestItemHTML(p){
     <div class="s-thumb">${productIconSVG(p.icon)}</div>
     <div>
       <h5>${p.name}</h5>
-      <span>${p.category} · ${formatPrice(p.price)}</span>
+      <span>${p.category} · ${formatPrice(getStartingPrice(p))}</span>
     </div>
   </a>`;
 }

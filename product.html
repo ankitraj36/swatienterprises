@@ -211,38 +211,39 @@
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
-  const id = Number(params.get("id")) || PRODUCTS[0].id;
+  const id = params.get("id") || PRODUCTS[0].id;
   const p = getProductById(id) || PRODUCTS[0];
   document.title = p.name + " | Swati Enterprises";
   document.getElementById("crumbName").textContent = p.name;
 
-  const stockClass = p.stock === "in" ? "in" : p.stock === "low" ? "low" : "out";
+  const stockClass = p.inStock ? "in" : "out";
+  const startPrice = getStartingPrice(p);
+  const variantOptions = (p.variants || []).map((v, i) =>
+    `<option value="${i}">${v.size} — ${formatPrice(v.price)}</option>`
+  ).join('');
+
   document.getElementById("pdRoot").innerHTML = `
     <div class="pd-gallery">
       <div class="pd-gallery-main" id="pdMainMedia">${productIconSVG(p.icon)}</div>
-      <div class="pd-thumbs">
-        <button class="active" data-thumb="${p.icon}">${productIconSVG(p.icon)}</button>
-        <button data-thumb="jar">${productIconSVG('jar')}</button>
-        <button data-thumb="bottle">${productIconSVG('bottle')}</button>
-      </div>
     </div>
     <div class="pd-info reveal in">
       <span class="product-cat">${p.category}</span>
       <h1>${p.name}</h1>
-      <div class="product-rating"><span class="stars">${starRow(p.rating)}</span> ${p.rating} (${p.reviews} reviews)</div>
       <div class="pd-price-row">
-        <span class="price-now">${formatPrice(p.price)}</span>
-        ${p.oldPrice ? `<span class="price-old">${formatPrice(p.oldPrice)}</span><span class="badge" style="position:static;">${p.badge}</span>` : ''}
+        <span class="price-now" id="pdPriceNow">${startPrice ? formatPrice(startPrice) : 'Contact for price'}</span>
       </div>
-      <p class="pd-desc">${p.desc}</p>
-      <span class="stock-status ${stockClass}">${p.stockLabel}</span>
+      <p class="pd-desc">${p.description}</p>
+      ${p.composition ? `<p class="pd-desc"><strong>Composition:</strong> ${p.composition}</p>` : ''}
+      ${variantOptions ? `<div class="form-group"><label for="pdVariant">Size / Pack</label>
+        <select id="pdVariant">${variantOptions}</select></div>` : ''}
+      <span class="stock-status ${stockClass}">${p.inStock ? '✅ In Stock' : '❌ Out of Stock'}</span>
       <div class="pd-actions">
         <div class="qty-control">
           <button id="pdDecr">−</button>
           <input type="number" id="pdQty" value="1" min="1">
           <button id="pdIncr">+</button>
         </div>
-        <button class="btn btn-primary" id="pdAddBtn" ${p.stock==='out'?'disabled':''}>Add to Cart</button>
+        <button class="btn btn-primary" id="pdAddBtn" ${p.inStock ? '' : 'disabled'}>Add to Cart</button>
         <button class="btn-icon" id="pdWishBtn" aria-label="Add to wishlist">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.3C0.3 7.9 2.6 4 6.4 4c2 0 3.6 1 5.6 3 2-2 3.6-3 5.6-3 3.8 0 6.1 3.9 4.4 7.7C19.5 16.4 12 21 12 21z"/></svg>
         </button>
@@ -254,15 +255,15 @@ document.addEventListener("DOMContentLoaded", () => {
       </ul>
     </div>
   `;
-  document.getElementById("pdFullDesc").textContent = p.desc + " Always read the label before use, and consult your physician or pharmacist for personalised guidance regarding dosage and suitability.";
+  document.getElementById("pdFullDesc").textContent = p.description + (p.usage ? " " + p.usage : "") + " Always read the label before use, and consult your physician or pharmacist for personalised guidance regarding dosage and suitability.";
 
-  document.querySelectorAll("[data-thumb]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll("[data-thumb]").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      document.getElementById("pdMainMedia").innerHTML = productIconSVG(btn.dataset.thumb);
+  const variantSelect = document.getElementById("pdVariant");
+  if (variantSelect) {
+    variantSelect.addEventListener("change", () => {
+      const v = p.variants[Number(variantSelect.value)];
+      document.getElementById("pdPriceNow").textContent = formatPrice(v.price);
     });
-  });
+  }
 
   const qtyInput = document.getElementById("pdQty");
   document.getElementById("pdIncr").addEventListener("click", () => qtyInput.value = Number(qtyInput.value) + 1);

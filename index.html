@@ -411,12 +411,12 @@ document.addEventListener("DOMContentLoaded", () => {
     </a>`;
   }).join("");
 
-  // Featured products
-  renderGrid(document.getElementById("featuredGrid"), PRODUCTS.filter(p => p.featured).slice(0, 8));
+  // Featured products (first 8 in the catalog)
+  renderGrid(document.getElementById("featuredGrid"), PRODUCTS.slice(0, 8));
 
-  // Best sellers slider
-  const bs = PRODUCTS.filter(p => p.bestSeller);
-  document.getElementById("bestSellerTrack").innerHTML = bs.map(productCardHTML).join("");
+  // Best sellers slider (remaining catalog items, most recently added first)
+  const bs = [...PRODUCTS].reverse().slice(0, 8);
+  document.getElementById("bestSellerTrack").innerHTML = bs.map(renderProductCard).join("");
   bindSlider("bestSellerTrack", "bsPrev", "bsNext");
 });
 </script>

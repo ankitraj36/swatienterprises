@@ -16,7 +16,7 @@ function saveCart(cart){
 }
 function addToCart(productId, qty = 1){
   const product = getProductById(productId);
-  if(!product || product.stock === "out") return;
+  if(!product || !product.inStock) return;
   const cart = getCart();
   const existing = cart.find(i => i.id === productId);
   if(existing){ existing.qty += qty; }
@@ -44,7 +44,7 @@ function cartTotals(){
   let subtotal = 0, count = 0;
   cart.forEach(i => {
     const p = getProductById(i.id);
-    if(p){ subtotal += p.price * i.qty; count += i.qty; }
+    if(p){ subtotal += getStartingPrice(p) * i.qty; count += i.qty; }
   });
   const shipping = subtotal === 0 || subtotal >= FREE_SHIP_THRESHOLD ? 0 : SHIPPING_FLAT;
   const total = subtotal + shipping;
@@ -95,7 +95,7 @@ function renderCartPage(){
           </div>
         </div>
       </td>
-      <td>${formatPrice(p.price)}</td>
+      <td>${formatPrice(getStartingPrice(p))}</td>
       <td>
         <div class="qty-control">
           <button data-decr="${p.id}" aria-label="Decrease quantity">−</button>
@@ -103,7 +103,7 @@ function renderCartPage(){
           <button data-incr="${p.id}" aria-label="Increase quantity">+</button>
         </div>
       </td>
-      <td>${formatPrice(p.price * item.qty)}</td>
+      <td>${formatPrice(getStartingPrice(p) * item.qty)}</td>
       <td><button class="remove-btn" data-remove="${p.id}">✕ Remove</button></td>
     </tr>`;
   }).join("");
@@ -125,20 +125,20 @@ function bindCartPageEvents(){
     const incr = e.target.closest("[data-incr]");
     const remove = e.target.closest("[data-remove]");
     if(decr){
-      const id = Number(decr.dataset.decr);
+      const id = decr.dataset.decr;
       const item = getCart().find(i => i.id === id);
       if(item) updateCartQty(id, item.qty - 1 <= 0 ? 1 : item.qty - 1);
     }
     if(incr){
-      const id = Number(incr.dataset.incr);
+      const id = incr.dataset.incr;
       const item = getCart().find(i => i.id === id);
       if(item) updateCartQty(id, item.qty + 1);
     }
-    if(remove){ removeFromCart(Number(remove.dataset.remove)); }
+    if(remove){ removeFromCart(remove.dataset.remove); }
   });
   tbody.addEventListener("change", e => {
     if(e.target.matches("[data-qty]")){
-      updateCartQty(Number(e.target.dataset.qty), Number(e.target.value));
+      updateCartQty(e.target.dataset.qty, Number(e.target.value));
     }
   });
 
@@ -166,7 +166,7 @@ function renderCheckoutSummary(){
     list.innerHTML = cart.map(item => {
       const p = getProductById(item.id);
       if(!p) return "";
-      return `<div class="summary-row"><span>${p.name} × ${item.qty}</span><span>${formatPrice(p.price * item.qty)}</span></div>`;
+      return `<div class="summary-row"><span>${p.name} × ${item.qty}</span><span>${formatPrice(getStartingPrice(p) * item.qty)}</span></div>`;
     }).join("");
   }
   const { subtotal, shipping, total } = cartTotals();

@@ -144,22 +144,23 @@ function openQuickView(id){
   const overlay = document.getElementById("quickViewOverlay");
   const body = document.getElementById("quickViewBody");
   if(!overlay || !body) return;
-  const stockClass = p.stock === "in" ? "in" : p.stock === "low" ? "low" : "out";
+  const stockClass = p.inStock ? "in" : "out";
+  const startPrice = getStartingPrice(p);
+  const variantList = (p.variants || []).map(v => `<span class="variant-tag">${v.size}: ${formatPrice(v.price)}</span>`).join('');
   body.innerHTML = `
     <div class="quickview-grid">
       <div class="quickview-media">${productIconSVG(p.icon)}</div>
       <div class="quickview-body">
         <span class="product-cat">${p.category}</span>
         <h2 style="margin:8px 0;">${p.name}</h2>
-        <div class="product-rating" style="margin-bottom:10px;"><span class="stars">${starRow(p.rating)}</span> ${p.rating} (${p.reviews} reviews)</div>
         <div class="pd-price-row" style="margin:12px 0;">
-          <span class="price-now">${formatPrice(p.price)}</span>
-          ${p.oldPrice ? `<span class="price-old">${formatPrice(p.oldPrice)}</span>` : ''}
+          <span class="price-now">${startPrice ? "From " + formatPrice(startPrice) : "Contact for price"}</span>
         </div>
-        <p style="color:var(--slate-2);font-size:.92rem;margin-bottom:14px;">${p.desc}</p>
-        <span class="stock-status ${stockClass}">${p.stockLabel}</span>
+        <p style="color:var(--slate-2);font-size:.92rem;margin-bottom:14px;">${p.description}</p>
+        <div class="product-variants" style="margin-bottom:14px;">${variantList}</div>
+        <span class="stock-status ${stockClass}">${p.inStock ? "✅ In Stock" : "❌ Out of Stock"}</span>
         <div class="pd-actions">
-          <button class="btn btn-primary" data-add="${p.id}" ${p.stock==='out'?'disabled':''}>Add to Cart</button>
+          <button class="btn btn-primary" data-add="${p.id}" ${p.inStock ? '' : 'disabled'}>Add to Cart</button>
           <a class="btn btn-outline" href="product.html?id=${p.id}">View Full Details</a>
         </div>
       </div>
@@ -185,13 +186,13 @@ document.addEventListener("click", e => {
   const wishBtn = e.target.closest("[data-wish]");
   const qvBtn = e.target.closest("[data-quickview]");
 
-  if(addBtn){ addToCart(Number(addBtn.dataset.add)); }
+  if(addBtn){ addToCart(addBtn.dataset.add); }
   if(wishBtn){
-    const active = toggleWishlist(Number(wishBtn.dataset.wish));
+    const active = toggleWishlist(wishBtn.dataset.wish);
     wishBtn.classList.toggle("active", active);
     wishBtn.querySelector("svg").setAttribute("fill", active ? "currentColor" : "none");
   }
-  if(qvBtn){ openQuickView(Number(qvBtn.dataset.quickview)); }
+  if(qvBtn){ openQuickView(qvBtn.dataset.quickview); }
 });
 
 /* ---------- Form validation helpers ---------- */

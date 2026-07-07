@@ -198,15 +198,17 @@
 document.addEventListener("DOMContentLoaded", () => {
   const cats = [...new Set(PRODUCTS.map(p => p.category))];
   const descs = {
-    "Pain Relief": "Fast, effective relief from headaches, body ache, and everyday pain.",
-    "Cold & Flu": "Soothing syrups and tablets to help your family recover faster.",
-    "Vitamins": "Daily multivitamins and supplements to keep energy and immunity up.",
-    "Diabetes Care": "Monitoring devices and supportive care for healthy blood sugar.",
-    "Heart Care": "Omega-3s, BP monitors, and essentials for a healthy heart.",
-    "Skin Care": "Dermatologist-tested cleansers and creams for every skin type.",
-    "Baby Care": "Gentle, tear-free formulas made for delicate baby skin.",
+    "Antiseptics": "Trusted antiseptic solutions to clean wounds and prevent infection.",
+    "Digestive Health": "Relief for constipation, acidity, and everyday digestive discomfort.",
+    "Disinfectants": "Powerful disinfectants to keep your home, water, and surfaces germ-free.",
+    "Ear Care": "Gentle drops and solutions for ear hygiene and comfort.",
+    "Hair Care": "Oils and treatments to nourish hair and support healthy growth.",
+    "Health Supplements": "Vitamins and supplements to support daily energy and immunity.",
+    "Medical": "Essential medical devices and consumables for home and clinical use.",
+    "Oral Care": "Everyday products to keep teeth and gums healthy.",
     "Personal Care": "Everyday hygiene essentials for the whole household.",
-    "Medical Equipment": "Reliable home-use devices for monitoring and support."
+    "Skin Care": "Gentle, effective care for healthy skin.",
+    "Wound Care": "Bandages, dressings, and solutions for cleaning and protecting wounds."
   };
   const grid = document.getElementById("catHeroGrid");
   grid.innerHTML = cats.map(c => {

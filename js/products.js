@@ -1,126 +1,1080 @@
-/* ===========================================================
-   PRODUCTS — data + rendering helpers
-   (Data embedded directly so the site works when opened
-   straight from disk, without a local server for fetch().)
-   =========================================================== */
-
+// ============================================================
+// ADPL PRODUCT DATA – Extracted from product images
+// ============================================================
 const PRODUCTS = [
-  { id: 1, name: "PainAway Rapid Relief Tablets", category: "Pain Relief", price: 149, oldPrice: 199, rating: 4.6, reviews: 214, stock: "in", stockLabel: "In Stock", badge: "-25%", icon: "capsule", desc: "Fast-acting relief from headaches, body ache, and mild fever. Non-drowsy formula suitable for daily use as directed.", bestSeller: true, featured: true },
-  { id: 2, name: "FlexoJoint Muscle Gel", category: "Pain Relief", price: 220, oldPrice: 260, rating: 4.4, reviews: 132, stock: "in", stockLabel: "In Stock", badge: "-15%", icon: "tube", desc: "Soothing topical gel for joint and muscle pain, with a cooling effect that absorbs quickly without greasy residue.", bestSeller: false, featured: true },
-  { id: 3, name: "ColdShield Cough Syrup", category: "Cold & Flu", price: 95, oldPrice: 120, rating: 4.5, reviews: 189, stock: "in", stockLabel: "In Stock", badge: "-20%", icon: "bottle", desc: "A gentle syrup that eases cough, throat irritation, and nasal congestion for the whole family.", bestSeller: true, featured: true },
-  { id: 4, name: "FluCare Combo Tablets", category: "Cold & Flu", price: 130, oldPrice: 150, rating: 4.3, reviews: 97, stock: "low", stockLabel: "Only 4 left", badge: "", icon: "capsule", desc: "Combination formula targeting fever, body ache, and congestion associated with common flu.", bestSeller: false, featured: false },
-  { id: 5, name: "VitaBoost Multivitamin", category: "Vitamins", price: 349, oldPrice: 449, rating: 4.8, reviews: 341, stock: "in", stockLabel: "In Stock", badge: "-22%", icon: "jar", desc: "Daily multivitamin with 24 essential nutrients to support energy, immunity, and overall wellness.", bestSeller: true, featured: true },
-  { id: 6, name: "Vitamin D3 Sunshine Drops", category: "Vitamins", price: 210, oldPrice: 250, rating: 4.7, reviews: 176, stock: "in", stockLabel: "In Stock", badge: "-16%", icon: "dropper", desc: "Concentrated D3 drops to support bone health and immunity, ideal for the whole family.", bestSeller: false, featured: true },
-  { id: 7, name: "GlucoBalance Care Tablets", category: "Diabetes Care", price: 410, oldPrice: 480, rating: 4.5, reviews: 88, stock: "in", stockLabel: "In Stock", badge: "-15%", icon: "capsule", desc: "Supports healthy blood sugar levels as part of a balanced diabetes management routine.", bestSeller: false, featured: true },
-  { id: 8, name: "SugarCheck Glucometer Kit", category: "Diabetes Care", price: 899, oldPrice: 1099, rating: 4.6, reviews: 152, stock: "in", stockLabel: "In Stock", badge: "-18%", icon: "device", desc: "Accurate, easy-to-use glucometer kit with 25 test strips and lancets included.", bestSeller: true, featured: true },
-  { id: 9, name: "CardioPlus Omega-3 Softgels", category: "Heart Care", price: 380, oldPrice: 430, rating: 4.7, reviews: 203, stock: "in", stockLabel: "In Stock", badge: "-12%", icon: "capsule", desc: "High-purity fish oil softgels supporting healthy cholesterol levels and heart function.", bestSeller: true, featured: true },
-  { id: 10, name: "PressureEase BP Monitor", category: "Heart Care", price: 1450, oldPrice: 1700, rating: 4.8, reviews: 264, stock: "low", stockLabel: "Only 3 left", badge: "-15%", icon: "device", desc: "Clinically validated digital blood pressure monitor with irregular heartbeat detection.", bestSeller: false, featured: false },
-  { id: 11, name: "DermaPure Gentle Face Wash", category: "Skin Care", price: 175, oldPrice: 210, rating: 4.4, reviews: 118, stock: "in", stockLabel: "In Stock", badge: "-17%", icon: "bottle", desc: "Dermatologist-tested gentle cleanser suitable for sensitive and acne-prone skin.", bestSeller: false, featured: true },
-  { id: 12, name: "SoftGlow Moisturizing Cream", category: "Skin Care", price: 260, oldPrice: 310, rating: 4.6, reviews: 145, stock: "in", stockLabel: "In Stock", badge: "-16%", icon: "jar", desc: "24-hour hydration cream with ceramides to strengthen and soothe dry skin.", bestSeller: true, featured: false },
-  { id: 13, name: "LittleSteps Baby Lotion", category: "Baby Care", price: 199, oldPrice: 230, rating: 4.7, reviews: 231, stock: "in", stockLabel: "In Stock", badge: "-13%", icon: "bottle", desc: "Mild, tear-free lotion formulated for delicate newborn and infant skin.", bestSeller: true, featured: true },
-  { id: 14, name: "GentleCare Diaper Rash Cream", category: "Baby Care", price: 165, oldPrice: 190, rating: 4.5, reviews: 97, stock: "in", stockLabel: "In Stock", badge: "-13%", icon: "jar", desc: "Soothing barrier cream that helps protect and heal delicate baby skin.", bestSeller: false, featured: false },
-  { id: 15, name: "FreshDay Hand Sanitizer", category: "Personal Care", price: 85, oldPrice: 100, rating: 4.3, reviews: 302, stock: "in", stockLabel: "In Stock", badge: "-15%", icon: "bottle", desc: "70% alcohol-based sanitizer that kills 99.9% of germs while keeping hands soft.", bestSeller: true, featured: false },
-  { id: 16, name: "OralFresh Antiseptic Mouthwash", category: "Personal Care", price: 120, oldPrice: 145, rating: 4.4, reviews: 168, stock: "in", stockLabel: "In Stock", badge: "-17%", icon: "bottle", desc: "Alcohol-free mouthwash that fights plaque and freshens breath for up to 12 hours.", bestSeller: false, featured: false },
-  { id: 17, name: "ComfortFlex Knee Support", category: "Medical Equipment", price: 450, oldPrice: 550, rating: 4.5, reviews: 76, stock: "in", stockLabel: "In Stock", badge: "-18%", icon: "device", desc: "Breathable compression knee support for pain relief during daily activity.", bestSeller: false, featured: false },
-  { id: 18, name: "PulseOx Fingertip Oximeter", category: "Medical Equipment", price: 799, oldPrice: 950, rating: 4.7, reviews: 289, stock: "in", stockLabel: "In Stock", badge: "-16%", icon: "device", desc: "Fast, accurate SpO2 and pulse rate readings with a bright digital display.", bestSeller: true, featured: true },
-  { id: 19, name: "N95 ProShield Face Masks (Pack of 10)", category: "Medical Equipment", price: 299, oldPrice: 350, rating: 4.6, reviews: 412, stock: "in", stockLabel: "In Stock", badge: "-15%", icon: "device", desc: "5-layer protective face masks offering a secure, breathable fit for everyday use.", bestSeller: true, featured: false },
-  { id: 20, name: "ImmunoGuard Vitamin C Chewables", category: "Vitamins", price: 240, oldPrice: 280, rating: 4.6, reviews: 198, stock: "out", stockLabel: "Out of Stock", badge: "", icon: "jar", desc: "Tangy orange-flavoured chewable tablets to support daily immune health.", bestSeller: false, featured: true }
+    // 1. Castor Oil I.P.
+    {
+        id: "castor-oil",
+        name: "Castor Oil I.P.",
+        category: "Digestive Health",
+        description: "Used to treat constipation. It helps in nourishing hair and increasing the growth of hair, especially for dark and dense eyebrows in infants, kids.",
+        composition: "Castor Oil",
+        usage: "Add 2-3 tablespoons of oil in lukewarm milk. Consume orally at night.",
+        variants: [
+            { size: "25 mL", price: 46 },
+            { size: "50 mL", price: 74 },
+            { size: "100 mL", price: 118 },
+            { size: "200 mL", price: 210 },
+            { size: "400 mL", price: 404 },
+            { size: "5 Lit.", price: 4000 }
+        ],
+        inStock: true,
+        image: "Images/castoroil.jpg",   // <-- add this line
+        uploadedImage: null,
+        icon: "💊"
+    },
+
+    {
+    id: "eleesa-suppositories-adult",
+    name: "Eleesa Suppositories Adult",
+    category: "Rectal Care",
+    description: "Adult glycerin suppositories formulated to provide quick relief from occasional constipation by stimulating bowel movement.",
+    composition: "Sodium Stearate IP 15% w/w, Glycerin IP 80% w/w, Purified Water IP q.s. to 100% w/w",
+    usage: "Wash hands thoroughly. Moisten the suppository with water. Lie on one side, insert the suppository into the rectum towards the stomach, and remain lying for about 15 minutes.",
+    variants: [
+        { size: "10 Pieces", price: 76 }
+    ],
+
+    inStock: true,
+    image: "Images/adultt.jpg",
+    uploadedImage: null,
+    icon: "💊"
+    },
+
+    {
+    id: "mandls-paint-bpc-68",
+    name: "Mandl's Paint B.P.C. '68",
+    category: "Oral Care",
+    description: "Antiseptic throat paint used for sore throat, pharyngitis, laryngitis, and tonsillitis. Its viscous nature helps the medicine stay longer on the affected area.",
+    composition: "Iodine IP 1.25% w/v, Potassium Iodide IP 2.5% w/v, Purified Water IP 2.5% w/v, Peppermint Oil IP 0.4% v/v, Anise Oil IP 4.0% v/v, Glycerin IP 100% v/v, Alcohol IP 3.6% v/v",
+    usage: "Apply to the affected throat area using a clean finger or applicator. Avoid eating or drinking for 15–20 minutes after application.",
+    variants: [
+        { size: "20 g", price: 84 },
+        { size: "250 g", price: 480 },
+        { size: "400 g", price: 712 }
+    ],
+
+    inStock: true,
+    image: "Images/man.jpg",
+    uploadedImage: null,
+    icon: "🫗"
+    },
+
+    {
+    id: "weak-iodine-solution-ip-66",
+    name: "Weak Iodine Solution I.P. '66",
+    category: "Antiseptic",
+    description: "Topical antiseptic iodine solution used for disinfecting minor cuts, wounds, and skin infections.",
+    composition: "Iodine IP 2.0% w/v, Potassium Iodide IP 2.5% w/v, Alcohol (50%) q.s.",
+    usage: "Apply directly over the affected area using sterile cotton or gauze.",
+    variants: [
+        { size: "15 mL", price: 42 },
+        { size: "50 mL", price: 102 },
+        { size: "100 mL", price: 182 },
+        { size: "400 mL", price: 632 }
+    ],
+
+    inStock: true,
+    image: "Images/weak.jpg",
+    uploadedImage: null,
+    icon: "🩹"
+    },
+
+    {
+    id: "eleesa-suppositories-child",
+    name: "Eleesa Suppositories Child",
+    category: "Pediatric Care",
+    description: "Child glycerin suppositories specially formulated for safe and effective relief from occasional constipation in children.",
+    composition: "Sodium Stearate IP 15% w/w, Glycerin IP 80% w/w, Purified Water IP q.s. to 100% w/w",
+    usage: "Moisten the suppository with water before insertion. Insert approximately 2 cm into the rectum and keep the child lying down for about 15 minutes.",
+    variants: [
+        { size: "10 Pieces", price: 70 }
+    ],
+
+    inStock: true,
+    image: "Images/baby.jpg",
+    uploadedImage: null,
+    icon: "👶"
+    },
+
+
+    {
+    id: "zinc-oxide-ip",
+    name: "Zinc Oxide I.P.",
+    category: "Skin Care",
+    description: "Pure Zinc Oxide powder used as a topical protectant and mild astringent for various skin care applications.",
+    composition: "Zinc Oxide IP",
+    usage: "Sprinkle a small amount of Zinc Oxide powder evenly over the affected area.",
+    variants: [
+        { size: "20 g", price: 62 },
+        { size: "400 g", price: 740 }
+    ],
+
+    inStock: true,
+    image: "Images/zinc.jpg",
+    uploadedImage: null,
+    icon: "🧴"
+    },
+    // 2. Bleaching Powder
+    {
+        id: "bleaching-powder",
+        name: "Bleaching Powder",
+        category: "Disinfectants",
+        description: "Used to disinfect Water, Surface and equipment. Spread at open spaces to prevent from flies and mosquitoes.",
+        composition: "Bleaching Powder",
+        usage: "Not for internal use. Spread at open spaces to prevent from flies and mosquitoes.",
+        warning: "POISON (Non-Medicinal)",
+        variants: [
+            { size: "300 g", price: 108 },
+            { size: "500 g (Jar)", price: 180 }
+        ],
+        inStock: true,
+        image: "Images/bp.jpg",
+        uploadedImage: null,
+        icon: "🧹"
+    },
+
+   
+
+    // 4. French Chalk
+    {
+        id: "french-chalk",
+        name: "French Chalk",
+        category: "Personal Care",
+        description: "Absorbing perspiration on hands. Used on the gloves to maintain them.",
+        composition: "French Chalk",
+        usage: "Apply on hands/gloves as needed.",
+        variants: [
+            { size: "400 g", price: 48 }
+        ],
+        inStock: true,
+        image: "Images/fc.jpg",
+        uploadedImage: null,
+        icon: "🧴"
+    },
+
+    // 5. Ciprit
+    {
+        id: "ciprit",
+        name: "Ciprit",
+        category: "Antiseptics",
+        description: "Helps prevent infection. Used as a surface disinfectant to disinfect hospital surfaces. Used as Antiseptic to sanitize in clinics and hospitals.",
+        composition: "Isopropyl Alcohol IP 70% v/v, Purified water IP qs to 100% v/v",
+        usage: "Use a cotton swab soaked in CIPRIT. Clean the skin surface thoroughly.",
+        variants: [
+            { size: "50 mL", price: 34 },
+            { size: "100 mL", price: 60 },
+            { size: "200 mL", price: 110 },
+            { size: "400 mL", price: 200 },
+            { size: "500 mL", price: 250 },
+            { size: "1 Ltr", price: 500 },
+            { size: "4 Ltr", price: 2000 },
+            { size: "5 Ltr", price: 2500 }
+        ],
+        inStock: true,
+        image: "Images/ciprit.jpg",
+        uploadedImage: null,
+        icon: "🧪"
+    },
+
+    {
+    id: "ad-sore-borax-glycerin",
+    name: "AD-Sore (Borax Glycerin)",
+    category: "Oral Care",
+    description: "Borax Glycerin solution used for the treatment of mouth ulcers. Helps soothe irritation and promotes healing of oral sores.",
+    composition: "Borax IP 12% w/w, Glycerin IP 88% w/w",
+    usage: "Spread thoroughly over the affected mouth ulcer and allow it to remain for 5–7 minutes. Spit out the collected saliva. Repeat 3–4 times daily or as directed by a physician.",
+    variants: [
+        { size: "10 g", price: 24 },
+        { size: "25 g", price: 38 },
+        { size: "50 g", price: 66 },
+        { size: "100 g", price: 106 },
+        { size: "300 g", price: 300 },
+        { size: "400 g", price: 388 }
+    ],
+    inStock: true,
+    image: "Images/ad.jpg",
+    uploadedImage: null,
+    icon: "👄"
+    },
+
+    // 6. Compound Benzopin Tincture
+    {
+        id: "compound-benzopin-tincture",
+        name: "Compound Benzopin Tincture",
+        category: "Wound Care",
+        description: "Used as a patient to prevent blood oozing out from the open wounds. Use as a wet soap with a medical cotton pad swab. Treats minor cuts and wounds.",
+        composition: "Alcohol contents 70 to 77% v/v",
+        usage: "Use as a wet soap with a medical cotton pad swab.",
+        variants: [
+            { size: "50 ml", price: 42 },
+            { size: "100 ml", price: 102 },
+            { size: "400 ml", price: 162 }
+        ],
+        inStock: true,
+        image: "Images/compund.jpg",
+        uploadedImage: null,
+        icon: "🩹"
+    },
+
+    // 7. Silver Nitrate Stik
+    {
+        id: "silver-nitrate-stik",
+        name: "Silver Nitrate Stik",
+        category: "Wound Care",
+        description: "Germicidal activity. Antiseptic activity.",
+        composition: "Silver nitrate",
+        usage: "Apply directly to the affected area.",
+        variants: [
+            { size: "1 Stick", price: 0 }
+        ],
+        inStock: true,
+        image: "Images/silver.jpg",
+        uploadedImage: null,
+        icon: "🩹"
+    },
+
+    // 8. Glucern Lichthammol
+    {
+        id: "glucern-lichthammol",
+        name: "Glucern Lichthammol",
+        category: "Skin Care",
+        description: "Treats Psoriasis, Seborrheic dermatitis, Eczema, Burn wounds. Kills bacteria. Treats ear infection.",
+        composition: "Ichthammol 10% w/w, Glycerin 90% w/w",
+        usage: "Use as paint for treatment of Chronic eczema and psoriasis. Apply directly on infected area.",
+        variants: [
+            { size: "10 ml", price: 18 },
+            { size: "30 ml", price: 30 },
+            { size: "400 ml", price: 240 }
+        ],
+        inStock: true,
+        image: "Images/go.jpg",
+        uploadedImage: null,
+        icon: "🧴"
+    }
+,
+    // 9. German Violet Solution
+    {
+        id: "gentian-violet-solution",
+        name: "Gentian Violet Solution",
+        category: "Antiseptics",
+        description: "Treats bacterial infections and fungal infections.",
+        composition: "Solution of German Violet 28% w/v",
+        usage: "Used as paint for fungal skin infection and to treat wounds on human and animal skin. Apply directly on skin as lotion/paint.",
+        variants: [
+            { size: "10 ml", price: 18 },
+            { size: "30 ml", price: 30 },
+            { size: "400 ml", price: 240 }
+        ],
+        inStock: true,
+        image: "Images/gen.jpg",
+        uploadedImage: null,
+        icon: "🧪"
+    },
+
+    // 10. Liquid Paraffin IP (Heavy)
+    {
+        id: "liquid-paraffin-ip-heavy",
+        name: "Liquid Paraffin IP (Heavy)",
+        category: "Digestive Health",
+        description: "Mainly used to cure constipation. Used as a moisturizer.",
+        composition: "Liquid paraffin IP (Heavy)",
+        usage: "Take the prescribed dose/quantity of Liquid Paraffin by mouth using the measuring cup.",
+        variants: [
+            { size: "25 ml", price: 35 },
+            { size: "50 ml", price: 50 },
+            { size: "100 ml", price: 86 },
+            { size: "200 ml", price: 150 },
+            { size: "400 ml", price: 280 },
+            { size: "5 Ltr", price: 2560 }
+        ],
+        inStock: true,
+        image: "Images/liq.jpg",
+        uploadedImage: null,
+        icon: "💧"
+    },
+
+    // 11. Sodium Bicarbonate
+    {
+        id: "sodium-bicarbonate",
+        name: "Sodium Bicarbonate",
+        category: "Health Supplements",
+        description: "Used to relieve heartburn, sour stomach, or acid indigestion by neutralizing excess stomach acid. Widely used as an authentic baking soda in food preparations.",
+        composition: "Sodium Bicarbonate I.P.",
+        usage: "Use as directed for relief of acid indigestion.",
+        variants: [
+            { size: "20 g", price: 20 },
+            { size: "300 g", price: 21 }
+        ],
+        inStock: true,
+        image: "Images/so.jpg",
+        uploadedImage: null,
+        icon: "🍋"
+    },
+
+    // 12. Adurin Lotion
+    {
+        id: "adurin-lotion",
+        name: "Adurin Lotion",
+        category: "Skin Care",
+        description: "Treats Ringworm, Itches, Scabies, Eczema, Fungal Infection between fingers & toes, Rashes, and Skin allergy.",
+        composition: "Salicylic Acid I.P. 7.31% w/v, Benzoic Acid I.P. 2.44% w/v, Alcohol 78-82% v/v",
+        usage: "Apply directly on infected areas as drops or with cotton buds for treating ringworms, eczema and infections in toenails and fingers.",
+        variants: [
+            { size: "10 ml", price: 25 }
+        ],
+        inStock: true,
+        image: "Images/adurin.jpg",
+        uploadedImage: null,
+        icon: "🧴"
+    },
+
+    
+
+    // 14. Hexinol Antiseptic Liquid
+    {
+        id: "hexinol-antiseptic-liquid",
+        name: "Hexinol Antiseptic Liquid",
+        category: "Antiseptics",
+        description: "Chlorhexidine Gluconate Solution IP. For cleaning and disinfection.",
+        composition: "Chlorhexidine Gluconate Solution IP 0.3% w/v",
+        usage: "Apply this antiseptic liquid with the help of cotton pad for cleaning. Use as common antiseptic lotion.",
+        variants: [
+            { size: "100 mL", price: 44 },
+            { size: "1 L", price: 280 },
+            { size: "4.5 Lit.", price: 800 }
+        ],
+        inStock: true,
+        image: "Images/hex.jpg",
+        uploadedImage: null,
+        icon: "🧪"
+    },
+
+    // 15. Potassium Permanganate Pure
+    {
+        id: "potassium-permanganate-pure",
+        name: "Potassium Permanganate Pure",
+        category: "Disinfectants",
+        description: "Treats Infected eczema. Cures Superficial wounds, dermatitis, Athlete's foot, Impetigo. Protection from germs and infections. Purifies Water. Treats skin infections. Also has Antiseptic properties.",
+        composition: "Potassium Permanganate Pure",
+        usage: "Used to cure fungal infection. Used to clean utensils for disinfection with a pinch of powder dissolved in cleaning water. Rinse with clean water afterwards.",
+        variants: [
+            { size: "10g", price: 34 },
+            { size: "20g", price: 56 },
+            { size: "400 g", price: 590 }
+        ],
+        inStock: true,
+        image: "Images/pot.jpg",
+        uploadedImage: null,
+        icon: "🧪"
+    },
+
+    // 16. Eleesa Jelly I.P.
+    {
+        id: "elesa-jelly-ip",
+        name: "Eleesa Jelly I.P.",
+        category: "Skin Care",
+        description: "Moisturizes your face, hand and more. Softens dry, cracked heels when used regularly.",
+        composition: "Hard Paraffin IP: 18% w/w, Microcrystalline Wax IP: 15% w/w, Light Liquid Paraffin qs to: 100% w/w",
+        usage: "Apply to skin directly as often required.",
+        variants: [
+            { size: "400 g", price: 308 },
+            { size: "500 g", price: 360 },
+            { size: "800 g", price: 576 },
+            { size: "1 Kg", price: 690 },
+            { size: "4 Kg", price: 2400 },
+            { size: "10 Kg", price: 5160 },
+            { size: "15 Kg", price: 6900 }
+        ],
+        inStock: true,
+        image: "Images/255.jpg",
+        uploadedImage: null,
+        icon: "🧴"
+    },
+
+    // 17. Phyiso-Ald (Paraffin Wax)
+    {
+        id: "phyiso-ald",
+        name: "Phyiso-Ald",
+        category: "Pain Relief",
+        description: "Relax muscles. Paraffin wax also treats spinal pain and injuries.",
+        composition: "Paraffin Wax 45-50% w/w",
+        usage: "Melt by warming on flame and use as paraffin wax bath to reduce pain in muscle and joints for treatment.",
+        variants: [
+            { size: "400 g", price: 0 },
+            { size: "800 g", price: 0 }
+        ],
+        inStock: true,
+        image: "Images/wax.jpg",
+        uploadedImage: null,
+        icon: "🔥"
+    },
+
+
+   
+
+    // 20. Boric Acid Ear drops
+    {
+        id: "boric-acid-ear-drops",
+        name: "Boric Acid Ear drops",
+        category: "Ear Care",
+        description: "Treat for ear infection & Pain. Treat external & secondary inflammation of the ear like congestion & Trauma.",
+        composition: "Boric acid: 0.183g, Alcohol (95%): 2.08 ml, Purified water: 10 ml",
+        usage: "Instill 2-3 drops in infected ear to treat bacterial and fungal infections in the external ear.",
+        variants: [
+            { size: "10 ml", price: 64 }
+        ],
+        inStock: true,
+        image: "Images/boric.jpg",
+        uploadedImage: null,
+        icon: "👂"
+    },
+
+    // 21. Formaline Solution
+    {
+        id: "formaline-solution",
+        name: "Formaline Solution",
+        category: "Disinfectants",
+        description: "As Analytical reagent. Used as an antiseptic. Used for preserving biological and anatomical specimens.",
+        composition: "Formaldehyde 34% - 38%",
+        usage: "Used as disinfectant. Fumigation agent in OT's, Bakeries etc.",
+        variants: [
+            { size: "400 g", price: 100 },
+            { size: "5 Kg", price: 950 }
+        ],
+        inStock: true,
+        image: "Images/form.jpg",
+        uploadedImage: null,
+        icon: "🧪"
+    },
+
+    // 22. Merbromin Solution
+    {
+        id: "merbromin-solution",
+        name: "Merbromin Solution",
+        category: "Antiseptics",
+        description: "Antiseptic. Prevent infection.",
+        composition: "Merbromin 2% w/v, Benzethonium 6.1%",
+        usage: "Apply directly on open wound, commonly known as lid dermal.",
+        variants: [
+            { size: "N/A", price: 0 }
+        ],
+        inStock: true,
+        image: "Images/meo.jpg",
+        uploadedImage: null,
+        icon: "🩹"
+    },
+
+    // 23. E.C. Solution
+    {
+        id: "ec-solution",
+        name: "E.C. Solution",
+        category: "Wound Care",
+        description: "Marvelous Wet dressing/cleaning solution in case of burns/Wounds etc.",
+        composition: "Chlorinated Lime & Boric acid",
+        usage: "Pour directly on the infected area followed by antiseptic lotion.",
+        variants: [
+            { size: "100 ml", price: 42 },
+            { size: "200 ml", price: 52 },
+            { size: "400 ml", price: 108 }
+        ],
+        inStock: true,
+        image: "Images/ec.jpg",
+        uploadedImage: null,
+        icon: "🩹"
+    },
+
+    // 24. Lysol I.P.
+    {
+        id: "lysol-ip",
+        name: "Lysol I.P.",
+        category: "Disinfectants",
+        description: "Powerful surface cleaning agent. Sanitizes soft surfaces. For Bathroom, Kitchen and Home Cleaning.",
+        composition: "50% v/v",
+        usage: "Dilute to 1.5 ratio with water for cleaning surface (Floor) and common household cleaner.",
+        variants: [
+            { size: "400 ml", price: 632 },
+            { size: "5 lit", price: 6400 }
+        ],
+        inStock: true,
+        image: "Images/lysol.jpg",
+        uploadedImage: null,
+        icon: "🧹"
+    },
+
+    // 25. Turpentine Oil
+    {
+        id: "turpentine-oil",
+        name: "Turpentine Oil",
+        category: "Hair Care",
+        description: "Used to prevent hair loss.",
+        composition: "Turpentine Oil",
+        usage: "Apply directly to hair.",
+        variants: [
+            { size: "25 ml", price: 44 },
+            { size: "50 ml", price: 66 },
+            { size: "100 ml", price: 114 }
+        ],
+        inStock: true,
+        image: "Images/tpa.jpg",
+        uploadedImage: null,
+        icon: "💇"
+    },
+
+    // 26. Magnesium Sulphate IP
+    {
+        id: "magnesium-sulphate-ip",
+        name: "Magnesium Sulphate IP",
+        category: "Health Supplements",
+        description: "As osmotic laxative. Cleaning agent. In treatment of electrolyte deficiency. Athlete's foot. Treat toenail fungus. Soothe sprains and bruises. Ease discomfort of gout. Remove foot odour.",
+        composition: "Magnesium Sulphate IP (Epsom Salt)",
+        usage: "Used to control low blood levels of magnesium. Use as prescribed by physician.",
+        variants: [
+            { size: "300 g", price: 0 }
+        ],
+        inStock: true,
+        image: "Images/mag.jpg",
+        uploadedImage: null,
+        icon: "💊"
+    },
+
+ 
+
+    // 28. Glerol-Os
+    {
+        id: "glerol-os",
+        name: "Glerol-Os",
+        category: "Medical",
+        description: "Treats acute Glaucoma. Treats Trigeminal neuralgia.",
+        composition: "Glycerol IP 85% w/w, Flavour 0.01% w/w, Purified water IP qs to 100% w/w",
+        usage: "To be used under medical supervision for treatment of Glaucoma and Neurosurgical ailments.",
+        variants: [
+            { size: "100 g", price: 112 },
+            { size: "200 g", price: 202 },
+            { size: "300 g", price: 294 },
+            { size: "400 g", price: 364 },
+            { size: "500 g", price: 430 },
+            { size: "1 Kg", price: 756 },
+            { size: "5 Kg", price: 3700 }
+        ],
+        inStock: true,
+        image: "Images/gle.jpg",
+        uploadedImage: null,
+        icon: "💉"
+    },
+
+ 
+
+    // 30. Adtizer Hand Sanitizer (WHO)
+    {
+        id: "adtizer-hand-sanitizer-who",
+        name: "Adtizer Hand Sanitizer (WHO)",
+        category: "Antiseptics",
+        description: "Used to clean hands without water. Used to disinfect your hands and your surroundings.",
+        composition: "Ethanol Alcohol 80.00% v/v, Glycerin IP, Hydrogen peroxide, Purified water IP & Perfume",
+        usage: "Put enough sanitizer on your hands to cover all surfaces. Rub your hands together until they feel dry.",
+        variants: [
+            { size: "60 mL", price: 30 },
+            { size: "120 mL", price: 60 },
+            { size: "200 mL", price: 100 },
+            { size: "500 mL", price: 250 },
+            { size: "5 Ltr", price: 2500 }
+        ],
+        inStock: true,
+        image: "Images/san.jpg",
+        uploadedImage: null,
+        icon: "🧴"
+    },
+
+ 
+
+    // 32. Hypochlorite
+    {
+        id: "hypochlorite",
+        name: "Sodium Hypochlorite",
+        category: "Disinfectants",
+        description: "Disinfectant solution for cleaning and sanitization.",
+        composition: "Hypochlorite",
+        usage: "Use as directed for disinfection.",
+        variants: [
+            { size: "5 lt", price: 810 }
+        ],
+        inStock: true,
+        image: "Images/last.jpg",
+        uploadedImage: null,
+        icon: "🧹"
+    }
 ];
 
+// Expose PRODUCTS globally (top-level const/let does NOT attach to window,
+// but shop.html and other pages rely on window.PRODUCTS to render the grid,
+// filters, cart, and quick-view — this was the reason nothing appeared).
+window.PRODUCTS = PRODUCTS;
+
+// ============================================================
+// IMAGE STORAGE SYSTEM
+// ============================================================
+
+class ImageStorage {
+    constructor() {
+        this.storageKey = 'adpl_product_images';
+        this.loadFromStorage();
+    }
+
+    loadFromStorage() {
+        try {
+            const saved = localStorage.getItem(this.storageKey);
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                PRODUCTS.forEach(product => {
+                    if (parsed[product.id]) {
+                        product.uploadedImage = parsed[product.id];
+                    }
+                });
+            }
+        } catch (e) {
+            console.warn('Failed to load images from storage:', e);
+        }
+    }
+
+    saveToStorage() {
+        try {
+            const data = {};
+            PRODUCTS.forEach(product => {
+                if (product.uploadedImage) {
+                    data[product.id] = product.uploadedImage;
+                }
+            });
+            localStorage.setItem(this.storageKey, JSON.stringify(data));
+        } catch (e) {
+            console.warn('Failed to save images to storage:', e);
+        }
+    }
+
+    uploadImage(productId, file) {
+        return new Promise((resolve, reject) => {
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) {
+                reject(new Error('Product not found'));
+                return;
+            }
+
+            if (!file.type.startsWith('image/')) {
+                reject(new Error('Please upload an image file'));
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                reject(new Error('Image size must be less than 5MB'));
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const imageData = e.target.result;
+                product.uploadedImage = imageData;
+                this.saveToStorage();
+                resolve(imageData);
+            };
+            reader.onerror = () => {
+                reject(new Error('Failed to read image file'));
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    removeImage(productId) {
+        const product = PRODUCTS.find(p => p.id === productId);
+        if (product) {
+            product.uploadedImage = null;
+            this.saveToStorage();
+        }
+    }
+
+    getImage(productId) {
+        const product = PRODUCTS.find(p => p.id === productId);
+        return product ? product.uploadedImage : null;
+    }
+
+    hasUploadedImage(productId) {
+        const product = PRODUCTS.find(p => p.id === productId);
+        return product ? !!product.uploadedImage : false;
+    }
+
+    clearAllImages() {
+        PRODUCTS.forEach(product => {
+            product.uploadedImage = null;
+        });
+        this.saveToStorage();
+    }
+}
+
+// Create global instance
+const imageStorage = new ImageStorage();
+
+// ============================================================
+// HELPER FUNCTIONS
+// ============================================================
+
+function formatPrice(price) {
+    if (price === 0) return "Contact for price";
+    return "₹" + price.toLocaleString("en-IN");
+}
+
+function getStartingPrice(product) {
+    if (!product || !product.variants || !product.variants.length) return null;
+    const prices = product.variants.map(v => v.price).filter(p => p > 0);
+    return prices.length ? Math.min(...prices) : null;
+}
+
+function getProductImage(product) {
+    if (product.uploadedImage) return product.uploadedImage;
+    return product.image || null;
+}
+
+function getProductById(id) {
+    return PRODUCTS.find(p => p.id === id);
+}
+
+function getProductsByCategory(category) {
+    return PRODUCTS.filter(p => p.category === category);
+}
+
+function productIconSVG(icon) {
+    return `<div class="product-icon-emoji" style="font-size:2.4rem;line-height:1;" aria-hidden="true">${icon || '📦'}</div>`;
+}
+
+// Real categories used across the catalog, mapped to a representative emoji.
 const CATEGORY_ICONS = {
-  "Pain Relief": "pill", "Cold & Flu": "flu", "Vitamins": "leaf", "Diabetes Care": "drop",
-  "Heart Care": "heart", "Skin Care": "sparkle", "Baby Care": "baby", "Personal Care": "shield",
-  "Medical Equipment": "device"
+    "Antiseptics": "🧫",
+    "Digestive Health": "🌿",
+    "Disinfectants": "🧪",
+    "Ear Care": "👂",
+    "Hair Care": "💇",
+    "Health Supplements": "💊",
+    "Medical": "🩺",
+    "Oral Care": "🦷",
+    "Personal Care": "🧼",
+    "Skin Care": "🧴",
+    "Wound Care": "🩹"
 };
 
-function getProductById(id){ return PRODUCTS.find(p => p.id === Number(id)); }
-function getProductsByCategory(cat){ return PRODUCTS.filter(p => p.category === cat); }
-function formatPrice(n){ return "₹" + Number(n).toLocaleString("en-IN"); }
-
-/* ---------- SVG icon library (medical themed, inline, no external assets) ---------- */
-function productIconSVG(type){
-  const icons = {
-    capsule: `<svg viewBox="0 0 100 100" fill="none"><rect x="20" y="38" width="60" height="24" rx="12" fill="var(--green)" opacity=".18"/><path d="M30 62 L70 38" stroke="var(--green-dark)" stroke-width="0"/><g><rect x="18" y="40" width="30" height="20" rx="10" fill="var(--blue)"/><rect x="48" y="40" width="30" height="20" rx="10" fill="var(--green)"/></g></svg>`,
-    tube: `<svg viewBox="0 0 100 100" fill="none"><rect x="30" y="20" width="40" height="60" rx="10" fill="var(--green)" opacity=".85"/><rect x="38" y="12" width="24" height="14" rx="4" fill="var(--blue)"/><rect x="34" y="55" width="32" height="6" rx="3" fill="#fff" opacity=".6"/><rect x="34" y="65" width="24" height="5" rx="2.5" fill="#fff" opacity=".4"/></svg>`,
-    bottle: `<svg viewBox="0 0 100 100" fill="none"><rect x="32" y="10" width="16" height="12" rx="2" fill="var(--blue-dark)"/><path d="M28 24 h24 a6 6 0 0 1 6 6 v50 a6 6 0 0 1 -6 6 h-24 a6 6 0 0 1 -6 -6 v-50 a6 6 0 0 1 6 -6 z" fill="var(--blue)"/><rect x="24" y="45" width="32" height="26" rx="4" fill="#fff" opacity=".85"/><path d="M40 51 v14 M33 58 h14" stroke="var(--green)" stroke-width="4" stroke-linecap="round"/></svg>`,
-    jar: `<svg viewBox="0 0 100 100" fill="none"><rect x="28" y="30" width="44" height="46" rx="10" fill="var(--green)"/><rect x="24" y="20" width="52" height="14" rx="6" fill="var(--green-dark)"/><circle cx="50" cy="53" r="12" fill="#fff" opacity=".9"/><path d="M50 47 v12 M44 53 h12" stroke="var(--blue)" stroke-width="3.5" stroke-linecap="round"/></svg>`,
-    dropper: `<svg viewBox="0 0 100 100" fill="none"><rect x="42" y="14" width="16" height="30" rx="6" fill="var(--blue)"/><path d="M42 44 h16 l-6 34 a4 4 0 0 1 -4 0 z" fill="var(--green)"/><rect x="38" y="10" width="24" height="8" rx="3" fill="var(--blue-dark)"/></svg>`,
-    device: `<svg viewBox="0 0 100 100" fill="none"><rect x="18" y="26" width="64" height="48" rx="10" fill="var(--blue)"/><rect x="26" y="34" width="48" height="22" rx="4" fill="#fff" opacity=".9"/><path d="M30 45 h8 l4 -8 6 16 5 -12 4 4 h11" stroke="var(--green)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34" cy="65" r="4" fill="#fff"/><circle cx="50" cy="65" r="4" fill="#fff" opacity=".6"/><circle cx="66" cy="65" r="4" fill="#fff" opacity=".6"/></svg>`
-  };
-  return icons[type] || icons.capsule;
+function categoryIconSVG(iconOrKey) {
+    const emoji = CATEGORY_ICONS[iconOrKey] || iconOrKey || "💊";
+    return `<div class="cat-icon-emoji" style="font-size:2rem;line-height:1;" aria-hidden="true">${emoji}</div>`;
 }
 
-function categoryIconSVG(type){
-  const s = `stroke="var(--green-dark)" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"`;
-  const icons = {
-    pill: `<svg viewBox="0 0 48 48"><rect x="8" y="19" width="32" height="12" rx="6" ${s}/><path d="M24 19 V31" ${s}/></svg>`,
-    flu: `<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="14" ${s}/><path d="M24 14 v6 M24 28 v6 M14 24 h6 M28 24 h6" ${s}/></svg>`,
-    leaf: `<svg viewBox="0 0 48 48"><path d="M14 34 C10 20 20 10 36 10 C36 26 26 36 14 34 Z" ${s}/><path d="M16 32 L32 12" ${s}/></svg>`,
-    drop: `<svg viewBox="0 0 48 48"><path d="M24 8 C30 20 36 26 36 32 a12 12 0 0 1 -24 0 C12 26 18 20 24 8 Z" ${s}/></svg>`,
-    heart: `<svg viewBox="0 0 48 48"><path d="M24 38 C10 28 6 20 10 14 a9 9 0 0 1 14 -1 a9 9 0 0 1 14 1 c4 6 0 14 -14 24 Z" ${s}/><path d="M14 24 h6 l3 -6 4 10 3 -6 h6" ${s}/></svg>`,
-    sparkle: `<svg viewBox="0 0 48 48"><path d="M24 8 L27 20 L39 24 L27 28 L24 40 L21 28 L9 24 L21 20 Z" ${s}/></svg>`,
-    baby: `<svg viewBox="0 0 48 48"><circle cx="24" cy="18" r="9" ${s}/><path d="M11 40 C11 28 37 28 37 40" ${s}/></svg>`,
-    shield: `<svg viewBox="0 0 48 48"><path d="M24 6 L38 12 V22 C38 32 32 38 24 42 C16 38 10 32 10 22 V12 Z" ${s}/><path d="M18 23 l4 4 8 -9" ${s}/></svg>`,
-    device: `<svg viewBox="0 0 48 48"><rect x="8" y="14" width="32" height="22" rx="4" ${s}/><path d="M13 25 h5 l3 -6 4 12 3 -9 3 3 h4" ${s}/></svg>`
-  };
-  return icons[type] || icons.pill;
+function renderGrid(container, products) {
+    if (!container) return;
+    if (!products || !products.length) {
+        container.innerHTML = `<div class="no-results">No products found. Try a different search or filter.</div>`;
+        return;
+    }
+    container.innerHTML = products.map(renderProductCard).join('');
 }
 
-function starRow(rating){
-  const full = Math.round(rating);
-  return '★★★★★'.slice(0, full) + '☆☆☆☆☆'.slice(0, 5 - full);
+// ============================================================
+// RENDER FUNCTIONS
+// ============================================================
+
+function renderProductCard(product) {
+    const startPrice = getStartingPrice(product);
+    const imageSrc = getProductImage(product);
+    
+    return `
+        <div class="product-card" data-id="${product.id}" data-category="${product.category}">
+            <div class="product-image-wrapper">
+                ${imageSrc ? 
+                    `<img src="${imageSrc}" alt="${product.name}" class="product-image" />` : 
+                    `<div class="product-icon">${product.icon || '📦'}</div>`
+                }
+                <button class="upload-btn" onclick="openUploadModal('${product.id}')" title="Upload product image">
+                    📷
+                </button>
+            </div>
+            <span class="product-category">${product.category}</span>
+            <h3 class="product-name">${product.name}</h3>
+            <p class="product-description">${product.description.substring(0, 80)}${product.description.length > 80 ? '...' : ''}</p>
+            <div class="product-variants">
+                ${product.variants.slice(0, 3).map(v => 
+                    `<span class="variant-tag">${v.size}: ${formatPrice(v.price)}</span>`
+                ).join('')}
+                ${product.variants.length > 3 ? `<span class="variant-tag">+${product.variants.length - 3} more</span>` : ''}
+            </div>
+            <div class="product-footer">
+                <span class="product-price">${startPrice ? formatPrice(startPrice) : 'Contact for price'}</span>
+                <span class="stock-status ${product.inStock ? 'in-stock' : 'out-of-stock'}">
+                    ${product.inStock ? '✅ In Stock' : '❌ Out of Stock'}
+                </span>
+            </div>
+            <div class="product-actions">
+                <button class="btn btn-primary" onclick="addToCart('${product.id}')">Add to Cart</button>
+                <button class="btn btn-secondary" onclick="viewProduct('${product.id}')">View Details</button>
+            </div>
+        </div>
+    `;
 }
 
-/* ---------- Card builders ---------- */
-function productCardHTML(p){
-  const wished = isWishlisted(p.id);
-  const stockClass = p.stock === "in" ? "in" : p.stock === "low" ? "low" : "out";
-  return `
-  <article class="product-card reveal in" data-id="${p.id}" data-category="${p.category}">
-    ${p.badge ? `<span class="badge">${p.badge}</span>` : (p.stock==='low' ? `<span class="badge stock-low">Low Stock</span>` : '')}
-    <button class="wish-btn ${wished ? 'active' : ''}" aria-label="Toggle wishlist" data-wish="${p.id}">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="${wished?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.3C0.3 7.9 2.6 4 6.4 4c2 0 3.6 1 5.6 3 2-2 3.6-3 5.6-3 3.8 0 6.1 3.9 4.4 7.7C19.5 16.4 12 21 12 21z"/></svg>
-    </button>
-    <a href="product.html?id=${p.id}" class="product-media">${productIconSVG(p.icon)}</a>
-    <div class="product-info">
-      <span class="product-cat">${p.category}</span>
-      <h3><a href="product.html?id=${p.id}">${p.name}</a></h3>
-      <div class="product-rating"><span class="stars">${starRow(p.rating)}</span> ${p.rating} (${p.reviews})</div>
-      <div class="product-price">
-        <span class="price-now">${formatPrice(p.price)}</span>
-        ${p.oldPrice ? `<span class="price-old">${formatPrice(p.oldPrice)}</span>` : ''}
-      </div>
-      <span class="stock-status ${stockClass}">${p.stockLabel}</span>
-      <div class="product-actions">
-        <button class="btn btn-primary btn-sm" data-add="${p.id}" ${p.stock==='out'?'disabled':''}>Add to Cart</button>
-        <button class="btn btn-ghost btn-sm" data-quickview="${p.id}">Quick View</button>
-      </div>
-    </div>
-  </article>`;
+function renderProductGrid(products) {
+    const grid = document.getElementById('productGrid');
+    if (!grid) return;
+    
+    if (!products || !products.length) {
+        grid.innerHTML = `<div class="no-results">No products found. Try a different search or filter.</div>`;
+        return;
+    }
+    
+    grid.innerHTML = products.map(renderProductCard).join('');
 }
 
-function renderGrid(el, list, emptyMsg = "No products found. Try a different search or filter."){
-  if(!el) return;
-  if(!list.length){
-    el.innerHTML = `<div class="no-results">${emptyMsg}</div>`;
-    return;
-  }
-  el.innerHTML = list.map(productCardHTML).join('');
+// ============================================================
+// FILTER FUNCTIONS
+// ============================================================
+
+function filterProducts(category, searchQuery) {
+    let filtered = [...PRODUCTS];
+    
+    if (category && category !== 'All') {
+        filtered = filtered.filter(p => p.category === category);
+    }
+    
+    if (searchQuery && searchQuery.trim()) {
+        const query = searchQuery.toLowerCase().trim();
+        filtered = filtered.filter(p => 
+            p.name.toLowerCase().includes(query) ||
+            p.description.toLowerCase().includes(query) ||
+            p.category.toLowerCase().includes(query)
+        );
+    }
+    
+    return filtered;
 }
 
-/* ---------- Shared logo mark ---------- */
-function logoSVG(size = 44){
-  return `<svg class="logo-mark" width="${size}" height="${size}" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#0F9D58"/>
-        <stop offset="100%" stop-color="#1976D2"/>
-      </linearGradient>
-    </defs>
-    <circle cx="32" cy="32" r="29" fill="none" stroke="url(#logoGrad)" stroke-width="2.4" stroke-dasharray="4 6"/>
-    <circle cx="32" cy="32" r="23" fill="url(#logoGrad)"/>
-    <path d="M32 18 c-8 0 -12 6 -12 12 c0 7 6 10 12 16 c6 -6 12 -9 12 -16 c0 -6 -4 -12 -12 -12z" fill="#ffffff" opacity="0.14"/>
-    <path d="M24 32 h16 M32 24 v16" stroke="#ffffff" stroke-width="4.4" stroke-linecap="round"/>
-    <path d="M20 40 q3 -8 8 -3" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" fill="none" opacity="0.85"/>
-  </svg>`;
+// ============================================================
+// UI FUNCTIONS
+// ============================================================
+
+function openUploadModal(productId) {
+    const modal = document.getElementById('uploadModal');
+    if (!modal) {
+        alert('Upload modal not found. Please check your HTML.');
+        return;
+    }
+    
+    modal.style.display = 'flex';
+    modal.dataset.productId = productId;
+    
+    const product = PRODUCTS.find(p => p.id === productId);
+    if (product) {
+        const nameEl = document.getElementById('uploadProductName');
+        if (nameEl) nameEl.textContent = product.name;
+    }
+    
+    // Clear previous preview
+    const preview = document.getElementById('uploadPreview');
+    if (preview) {
+        preview.style.display = 'none';
+        preview.src = '';
+    }
+    const fileInput = document.getElementById('imageFileInput');
+    if (fileInput) fileInput.value = '';
 }
+
+function closeUploadModal() {
+    const modal = document.getElementById('uploadModal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.dataset.productId = '';
+    }
+}
+
+async function handleImageUpload() {
+    const fileInput = document.getElementById('imageFileInput');
+    const modal = document.getElementById('uploadModal');
+    const productId = modal ? modal.dataset.productId : null;
+    
+    if (!productId) {
+        alert('Product ID not found');
+        return;
+    }
+    
+    const file = fileInput.files[0];
+    if (!file) {
+        alert('Please select an image file');
+        return;
+    }
+    
+    try {
+        const imageData = await imageStorage.uploadImage(productId, file);
+        const preview = document.getElementById('uploadPreview');
+        if (preview) {
+            preview.src = imageData;
+            preview.style.display = 'block';
+        }
+        
+        // Re-render the product grid
+        const category = document.getElementById('categoryFilter')?.value || 'All';
+        const search = document.getElementById('searchInput')?.value || '';
+        const filtered = filterProducts(category, search);
+        renderProductGrid(filtered);
+        
+        alert('Image uploaded successfully!');
+        fileInput.value = '';
+    } catch (error) {
+        alert('Upload failed: ' + error.message);
+    }
+}
+
+function addToCart(productId) {
+    const product = PRODUCTS.find(p => p.id === productId);
+    if (!product) return;
+    
+    let cart = JSON.parse(localStorage.getItem('adpl_cart') || '[]');
+    const existing = cart.find(item => item.id === productId);
+    
+    if (existing) {
+        existing.quantity += 1;
+    } else {
+        cart.push({ id: productId, quantity: 1 });
+    }
+    
+    localStorage.setItem('adpl_cart', JSON.stringify(cart));
+    updateCartBadge();
+    alert(`${product.name} added to cart!`);
+}
+
+function viewProduct(productId) {
+    window.location.href = `product.html?id=${productId}`;
+}
+
+function updateCartBadge() {
+    const cart = JSON.parse(localStorage.getItem('adpl_cart') || '[]');
+    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const badge = document.getElementById('cartBadge');
+    if (badge) {
+        badge.textContent = count > 0 ? count : '';
+        badge.style.display = count > 0 ? 'inline' : 'none';
+    }
+}
+
+// ============================================================
+// CATEGORY FILTER UI
+// ============================================================
+
+function renderCategoryFilters() {
+    const container = document.getElementById('categoryFilters');
+    if (!container) return;
+    
+    const categories = ['All', ...new Set(PRODUCTS.map(p => p.category))];
+    
+    container.innerHTML = categories.map(cat => 
+        `<button class="category-btn ${cat === 'All' ? 'active' : ''}" 
+                data-category="${cat}" 
+                onclick="applyCategoryFilter('${cat}')">
+            ${cat}
+        </button>`
+    ).join('');
+}
+
+function applyCategoryFilter(category) {
+    // Update active state
+    document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.category === category);
+    });
+    
+    // Update dropdown
+    const categorySelect = document.getElementById('categoryFilter');
+    if (categorySelect) {
+        categorySelect.value = category;
+    }
+    
+    // Filter products
+    const search = document.getElementById('searchInput')?.value || '';
+    const filtered = filterProducts(category, search);
+    renderProductGrid(filtered);
+    
+    // Update count
+    const countEl = document.getElementById('productCount');
+    if (countEl) {
+        countEl.textContent = `${filtered.length} products`;
+    }
+}
+
+// ============================================================
+// SEARCH FUNCTION
+// ============================================================
+
+function handleSearch() {
+    const searchInput = document.getElementById('searchInput');
+    const categorySelect = document.getElementById('categoryFilter');
+    
+    if (searchInput) {
+        const search = searchInput.value || '';
+        const category = categorySelect ? categorySelect.value : 'All';
+        const filtered = filterProducts(category, search);
+        renderProductGrid(filtered);
+        
+        const countEl = document.getElementById('productCount');
+        if (countEl) {
+            countEl.textContent = `${filtered.length} products`;
+        }
+        
+        // Update category buttons active state
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.category === category);
+        });
+    }
+}
+
+// ============================================================
+// INITIALIZATION
+// ============================================================
+
+function initShop() {
+    console.log('Initializing shop...');
+    
+    // Render category filters
+    renderCategoryFilters();
+    
+    // Render all products initially
+    renderProductGrid(PRODUCTS);
+    
+    // Update product count
+    const countEl = document.getElementById('productCount');
+    if (countEl) {
+        countEl.textContent = `${PRODUCTS.length} products`;
+    }
+    
+    // Update cart badge
+    updateCartBadge();
+    
+    // Setup search with debounce
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', handleSearch);
+    }
+    
+    // Setup category filter dropdown
+    const categorySelect = document.getElementById('categoryFilter');
+    if (categorySelect) {
+        categorySelect.addEventListener('change', handleSearch);
+        // Populate dropdown
+        const categories = ['All', ...new Set(PRODUCTS.map(p => p.category))];
+        categorySelect.innerHTML = categories.map(cat => 
+            `<option value="${cat}">${cat}</option>`
+        ).join('');
+    }
+    
+    // Modal close on click outside
+    const modal = document.getElementById('uploadModal');
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) closeUploadModal();
+        });
+    }
+    
+    console.log('Shop initialized successfully!');
+}
+
+// Run initialization when DOM is ready
+document.addEventListener('DOMContentLoaded', initShop);
